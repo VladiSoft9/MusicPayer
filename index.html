@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyMusicWorld</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <script src="https://kit.fontawesome.com/ea5810500c.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    
+    <div class="container">
+        <div class="musicPlayer">
+            <nav>
+                <div class="circle" onclick="MSG()">
+                    <i class="fa-solid fa-angle-left" id="leftBtn"></i>
+                </div>
+                <div class="circle" onclick="More()">
+                    <i class="fa-solid fa-bars-staggered" id="moreBtn"></i>
+                </div>
+            </nav>
+            <img src="albumart.png" class="albumArt" id="albumArt">
+            <h1 id="song-title">Song Title</h1>
+            <p id="albumName">Album</p>
+            <p id="albumYear">Year</p>
+            
+            <div class="file-input-container">
+                <label for="file-input" class="file-input-label">
+                    <i class="fa-solid fa-folder-open"></i> Load Song
+                </label>
+                <input type="file" id="file-input" accept="audio/*" style="display: none;">
+            </div>
+            
+            <audio id="song">
+                <source type="audio/mp3">
+            </audio>
+            <input type="range" value="0" id="progress">
+            <p id="songTime"></p>
+            <div class="controls">
+                <div onclick="BW()"><i class="fa-solid fa-backward"></i></div>
+                <div onclick="PP()"><i class="fa-solid fa-play" id="playBtn"></i></div>
+                <div onclick="FW()"><i class="fa-solid fa-forward"></i></div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsmediatags@3.9.7/dist/jsmediatags.min.js"></script>
+</body>
+</html>
