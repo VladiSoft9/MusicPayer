@@ -9,6 +9,11 @@ let songTime = document.getElementById('songTime')
 let fileInput = document.getElementById('file-input')
 let songTitle = document.getElementById('song-title')
 let artistName = document.getElementById('artist-name')
+const canvas = document.getElementById('visualizer')
+const ctx = canvas.getContext('2d')
+let audioContext
+let analyser
+let dataArray
 
 let playTime
 let playMinute
@@ -16,6 +21,50 @@ let playSecond
 let totalTime
 let totalMinute
 let totalSecond
+
+
+function initVisualizer() {
+  audioContext = new (window.AudioContext || window.webkitAudioContext)()
+  analyser = audioContext.createAnalyser()
+  analyser.fftSize = 256
+  
+  const source = audioContext.createMediaElementSource(song)
+  source.connect(analyser)
+  analyser.connect(audioContext.destination)
+  
+  dataArray = new Uint8Array(analyser.frequencyBinCount)
+  
+  canvas.width = canvas.offsetWidth
+  canvas.height = canvas.offsetHeight
+  
+  if (!song.paused) visualize()
+}
+
+function visualize() {
+  if (!analyser) return
+  
+  requestAnimationFrame(visualize)
+  
+  analyser.getByteFrequencyData(dataArray)
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+  
+  const barWidth = (canvas.width / dataArray.length) * 3
+  let x = 0;
+  
+  for (let i = 0; i < dataArray.length; i++) {
+    const barHeight = dataArray[i] / 1.2
+    
+    const gradient = ctx.createLinearGradient(0, canvas.height, 0, canvas.height - barHeight)
+    gradient.addColorStop(0, '#00b4db')
+    gradient.addColorStop(1, '#0083b0')
+    
+    ctx.fillStyle = gradient
+    ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight)
+    
+    x += barWidth + 3
+  }
+}
+
 
 function PP() {
     if (playBtn.classList.contains('fa-pause')) {
@@ -25,6 +74,7 @@ function PP() {
         animateButton(playBtn)
     } else {
         song.play()
+        if (!audioContext) initVisualizer()
         playBtn.classList.remove('fa-play')
         playBtn.classList.add('fa-pause')
         animateButton(playBtn)
@@ -71,7 +121,7 @@ function updateProgress() {
   }
 }
 
-progress.onchange = function() {
+progress.oninput = function() {
     song.play()
     song.currentTime = progress.value
     playBtn.classList.remove('fa-play')
@@ -100,7 +150,7 @@ fileInput.addEventListener('change', e => {
     const file = e.target.files[0]
     if (!file) return
 
-    loadSong(file)
+    loadMetaData(file)
     
     const fileURL = URL.createObjectURL(file)
     song.src = fileURL
@@ -118,7 +168,7 @@ fileInput.addEventListener('change', e => {
     }
 })
 
-function loadSong(file) {
+function loadMetaData(file) {
 
     const albumArt = document.getElementById('albumArt')
     const albumName = document.getElementById('albumName')
@@ -161,6 +211,22 @@ function loadSong(file) {
   
   }
 }
+
+window.addEventListener('resize', () => {
+  canvas.width = canvas.offsetWidth
+  canvas.height = canvas.offsetHeight
+})
+
+song.onplay = function() {
+  if (!audioContext) initVisualizer()
+}
+
+song.addEventListener('ended', function(){
+  song.currentTime = 0
+  progress.value = 0
+  updateSongInfo()
+  song.play()
+})
 
 function MSG() {
     window.alert('There is nothing to back at the moment :-)')

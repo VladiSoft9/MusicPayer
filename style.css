@@ -6,24 +6,54 @@
 
 }
 
-.container{
-    width: 100%;
-    height: 100vh;
-    background-image: linear-gradient(to bottom, rgb(0, 0, 255, 0.5), rgb(160, 39, 39, 0.5)), url(background.jpg);
-    background-size: cover;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    
+.visualizer-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background-image: linear-gradient(to bottom, rgba(0, 0, 255, 0.5), rgba(160, 39, 39, 0.5)), url(background.jpg);
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.musicPlayer{
-    background-color: antiquewhite;
-    width: 400px;
-    padding: 25px 35px;
-    text-align: center;
+#visualizer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0.7;
+  mix-blend-mode: screen;
+}
+.music-player-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.musicPlayer {
+  background-color: antiquewhite;
+  width: 400px;
+  padding: 25px 35px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 nav{
@@ -40,6 +70,7 @@ nav .circle{
     line-height: 40px;
     background: rgba(100, 91, 91, 0.671);
     color: brown;
+    cursor: pointer;
     box-shadow: 0 5px   10px rgb(0, 0, 255, 0.5);
     transition: all 0.3s ease;
 }
