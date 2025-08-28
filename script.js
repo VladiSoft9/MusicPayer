@@ -11,6 +11,8 @@ let songTitle = document.getElementById('song-title')
 let artistName = document.getElementById('artist-name')
 const canvas = document.getElementById('visualizer')
 const ctx = canvas.getContext('2d')
+let playlist = []
+let currentIndex = -1
 let audioContext
 let analyser
 let dataArray
@@ -116,7 +118,9 @@ song.addEventListener('timeupdate', updateProgress);
 
 function updateProgress() {
   if (!song.paused) {
-    progress.value = song.currentTime;
+    if(document.activeElement !== progress){
+      progress.value = song.currentTime;
+    }
     updateSongInfo();
   }
 }
@@ -147,8 +151,26 @@ function updateSongInfo() {
 
 // Uploading new file
 fileInput.addEventListener('change', e => {
-    const file = e.target.files[0]
-    if (!file) return
+    const files = Array.from(e.target.files)
+    if (!files || files.length === 0) return
+    
+    const oldPlaylistLength = playlist.length
+    
+    playlist = playlist.concat(files)
+    
+    if (oldPlaylistLength === 0) {
+        currentIndex = 0
+        loadAndPlaySong(currentIndex)
+    } 
+    else {
+        currentIndex = oldPlaylistLength 
+        loadAndPlaySong(currentIndex)
+    }
+})
+
+function loadAndPlaySong(index){
+
+    const file = playlist[index]
 
     loadMetaData(file)
     
@@ -166,7 +188,8 @@ fileInput.addEventListener('change', e => {
         playBtn.classList.remove('fa-play')
         playBtn.classList.add('fa-pause')
     }
-})
+}
+
 
 function loadMetaData(file) {
 
@@ -228,8 +251,14 @@ song.addEventListener('ended', function(){
   song.play()
 })
 
-function MSG() {
-    window.alert('There is nothing to back at the moment :-)')
+function PreviousSong() {
+    if(currentIndex > 0){
+      currentIndex--
+      loadAndPlaySong(currentIndex)
+    }
+    else{
+      window.alert('No previous songs available!')
+    }
 }
 
 function More() {
