@@ -3,8 +3,6 @@
 let progress = document.getElementById('progress')
 let song = document.getElementById('song')
 let playBtn = document.getElementById('playBtn')
-let leftBtn = document.getElementById('leftBtn')
-let moreBtn = document.getElementById('moreBtn')
 let songTime = document.getElementById('songTime')
 let fileInput = document.getElementById('file-input')
 let songTitle = document.getElementById('song-title')
@@ -261,6 +259,12 @@ function PreviousSong() {
     }
 }
 
-function More() {
-    window.alert('No more options at this stage!')
+function NextSong() {
+  if(playlist.length -1 > currentIndex){
+    currentIndex++
+    loadAndPlaySong(currentIndex)
+  }
+  else{
+    window.alert('No more songs available!')
+  }
 }

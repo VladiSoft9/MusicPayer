@@ -3,18 +3,26 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    transition: all 0.3s ease;
+}
 
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
 }
 
 .visualizer-container {
   position: relative;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   background-image: linear-gradient(to bottom, rgba(0, 0, 255, 0.5), rgba(160, 39, 39, 0.5)), url(background.jpg);
   background-size: cover;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 20px;
 }
 
 #visualizer {
@@ -25,7 +33,7 @@
   height: 100%;
   z-index: 0;
   opacity: 0.7;
-  mix-blend-mode: screen;
+  mix-blend-mode: difference;
 }
 .music-player-content {
   position: relative;
@@ -37,17 +45,12 @@
   justify-content: center;
 }
 
-.container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .musicPlayer {
-  background-color: antiquewhite;
-  width: 400px;
+  background: linear-gradient(135deg, #fffaf0, #f8f4e9);
+  backdrop-filter: blur(10px);
+  width: 90%;
+  max-width: 450px;
+  min-width: 300px;
   padding: 25px 35px;
   text-align: center;
   position: relative;
@@ -83,6 +86,8 @@ nav .circle:hover{
 
 .albumArt{
     width: 220px;
+    max-width: 80%;
+    height: auto;
     border-radius: 50%;
     border: 2px solid;
     box-shadow: 0 3px   10px rgb(0, 0, 255, 0.5);
@@ -90,14 +95,14 @@ nav .circle:hover{
 }
 
 .musicPlayer h1{
-    font-size: 20px;
+    font-size: clamp(18px, 4vw, 22px);
     font-weight: bold;
     margin-top: 20px;
 
 }
 
 .musicPlayer p{
-    font-size: 12px;
+    font-size: clamp(11px, 2.5vw, 13px);
     font-style: italic;
 }
 
@@ -109,7 +114,7 @@ nav .circle:hover{
     background: blue;
     cursor: pointer;
     margin: 40px 0;
-    transition: width 0.1s linear;
+    transition: all 0.2s ease;
 }
 
 #progress::-webkit-slider-thumb{
@@ -122,6 +127,10 @@ nav .circle:hover{
     box-shadow: 0 3px   10px rgb(0, 0, 255, 0.5);
 }
 
+#progress:hover {
+    transform: scale(1.02);
+}
+
 #songTime{
     margin-bottom: 10px;
     display: none;
@@ -131,6 +140,8 @@ nav .circle:hover{
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
 }
 
 .controls div{
@@ -189,4 +200,72 @@ nav .circle:hover{
 
 .file-input-label i {
     margin-right: 8px;
+}
+
+
+/* For Tablets */
+@media (max-width: 768px) {
+    .musicPlayer {
+        width: 85%;
+        padding: 20px;
+    }
+    
+    .controls div {
+        width: 45px;
+        height: 45px;
+        margin: 8px;
+    }
+    
+    .albumArt {
+        width: 160px;
+    }
+}
+
+/* For Mobile phones */
+@media (max-width: 480px) {
+    .musicPlayer {
+        width: 92%;
+        padding: 15px;
+        margin: 10px;
+    }
+    
+    .controls div {
+        width: 40px;
+        height: 40px;
+        margin: 5px;
+    }
+    
+    .controls div:nth-child(2) {
+        transform: scale(1.2);
+    }
+    
+    .albumArt {
+        width: 140px;
+    }
+    
+    nav .circle {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+/* For Ultra-wide screens */
+@media (min-width: 2000px) {
+    .musicPlayer {
+        max-width: 580px;
+        min-height: 550px;
+    }
+    
+    .albumArt {
+        width: 220px;
+        height: 220px;
+    }
+    
+    .music-player-content {
+        gap: 25px;
+    }
+
+    .controls{
+        gap: 40px;
+    }
 }
